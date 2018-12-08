@@ -26,7 +26,6 @@ port = 10001
 def pad_message(message):
     return message + " " * ((16 - len(message)) % 16)
 
-
 # TODO: Write a function that decrypts a message using the server's private key
 def decrypt_key(session_key):
     f = open('Keys/keys', 'rb')
@@ -66,8 +65,8 @@ def send_message(connection, data):
 # checks the stored hash of the password to see if they are equal. It returns
 # True if they are and False if they aren't
 def verify_hash(user, password):
-    userstring = user.decode('utf-8')
-    passtring = password.decode('utf-8')
+    userstring = user
+    passtring = password
     try:
         reader = open("passfile.txt", 'r')
         for line in reader.read().split('\n'):
@@ -115,10 +114,14 @@ def main():
 
                 # Decrypt message from client
                 plaintext_message = decrypt_message(ciphertext_message, plaintext_key)
-                print(plaintext_message)
+                print(plaintext_message.decode())
 
                 # Split response from user into the username and password
                 user, password = plaintext_message.split()
+                user = user.decode()
+                password = password.decode()
+                print(user)
+                print(password)
                 if verify_hash(user, password):
                     plaintext_response = "User successfully authenticated!"
                 else:
