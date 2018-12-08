@@ -1,16 +1,11 @@
 """
     client.py - Connect to an SSL server
-
     CSCI 3403
     Authors: Matt Niemiec and Abigail Fernandes
     Number of lines of code in solution: 117
         (Feel free to use more or less, this
         is provided as a sanity check)
-
     Put your team members' names:
-
-
-
 """
 
 import socket
@@ -26,8 +21,8 @@ iv = "G4XO4L\X<J;MPPLD"
 
 host = "localhost"
 port = 10001
-aeskey = os.urandom(16)
-aes = AES.new(aeskey, AES.MODE_CBC, iv)
+
+
 
 # A helper function that you may find useful for AES encryption
 def pad_message(message):
@@ -36,12 +31,13 @@ def pad_message(message):
 
 # TODO: Generate a random AES key
 def generate_key():
+    aeskey = os.urandom(16)
     return aeskey
 
 # TODO: Takes an AES session key and encrypts it using the server's
 # TODO: public key and returns the value
 def encrypt_handshake(session_key):
-    f = open('Keys/Keys.pub', 'rb')
+    f = open('Keys/keys.pub', 'rb')
     pubkey = RSA.importKey(f.read())
     f.close()
     return pubkey.encrypt(session_key, 32)[0]
@@ -50,6 +46,7 @@ def encrypt_handshake(session_key):
 # TODO: Encrypts the message using AES. Same as server function
 def encrypt_message(message, session_key):
     newmessage = pad_message(message)
+    aes = AES.new(session_key, AES.MODE_CBC, iv)
     return aes.encrypt(newmessage)
     
 

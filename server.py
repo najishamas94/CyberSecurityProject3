@@ -1,22 +1,18 @@
 """
     server.py - host an SSL server that checks passwords
-
     CSCI 3403
     Authors: Matt Niemiec and Abigail Fernandes
     Number of lines of code in solution: 140
         (Feel free to use more or less, this
         is provided as a sanity check)
-
     Put your team members' names:
-
-
-
 """
 
 import socket
 import hashlib
 import uuid
 import os
+from os import chmod
 from Crypto.Cipher import PKCS1_OAEP
 from Crypto.PublicKey import RSA
 from Crypto.Cipher import AES
@@ -26,7 +22,6 @@ iv = "G4XO4L\X<J;MPPLD"
 host = "localhost"
 port = 10001
 
-
 # A helper function. It may come in handy when performing symmetric encryption
 def pad_message(message):
     return message + " " * ((16 - len(message)) % 16)
@@ -34,11 +29,11 @@ def pad_message(message):
 
 # TODO: Write a function that decrypts a message using the server's private key
 def decrypt_key(session_key):
-    f = open('Keys/Keys.pem', 'rb')
+    f = open('Keys/keys', 'rb')
     read = f.read()
     priv = RSA.importKey(read)
     f.close()
-    return priv.decrypt(session_key, 32)[0]
+    return priv.decrypt(session_key)
 
 
 # TODO: Write a function that decrypts a message using the session key
@@ -50,7 +45,7 @@ def decrypt_message(client_message, session_key):
 # TODO: Encrypt a message using the session key
 def encrypt_message(message, session_key):
     aes = AES.new(session_key, AES.MODE_CBC, iv)
-    return aes.encrypt(message)
+    return aes.encrypt(pad_message(message))
 
 
 # Receive 1024 bytes from the client
