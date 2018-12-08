@@ -120,8 +120,6 @@ def main():
                 user, password = plaintext_message.split()
                 user = user.decode()
                 password = password.decode()
-                print(user)
-                print(password)
                 if verify_hash(user, password):
                     plaintext_response = "User successfully authenticated!"
                 else:
