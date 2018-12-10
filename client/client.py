@@ -6,6 +6,10 @@
         (Feel free to use more or less, this
         is provided as a sanity check)
     Put your team members' names:
+    Naji Shamas
+    Theodore Margoles
+    Adam Smrekar
+    Connor Dowd
 """
 
 import socket
